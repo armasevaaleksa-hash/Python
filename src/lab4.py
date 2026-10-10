@@ -1,200 +1,82 @@
 import re
 from collections import Counter
 
-# === Функції для базових операцій з рядками ===
+def find_word(text, word):
+    return word.lower() in text.lower()
 
-def find_substring(text, substring):
-    """
-    Пошук підрядка в тексті.
-    Повертає індекс першого входження або -1, якщо підрядок не знайдено.
-    """
-    # TODO: Реалізуйте функцію
-    pass
 
-def replace_substring(text, old, new):
-    """
-    Заміна підрядка в тексті.
-    """
-    # TODO: Реалізуйте функцію
-    pass
+def replace_word(text, old, new):
+    return text.replace(old, new)
 
-def split_text(text, delimiter=' '):
-    """
-    Розділення тексту за роздільником.
-    """
-    # TODO: Реалізуйте функцію
-    pass
+def split_words(text):
+    return text.split()
 
-def format_string_f(name, age):
-    """
-    Форматування рядка з використанням f-string.
-    Приклад: "Мене звати [name] і мені [age] років."
-    """
-    # TODO: Реалізуйте функцію
-    pass
 
-def format_string_method(name, age):
-    """
-    Форматування рядка з використанням методу .format().
-    Приклад: "Мене звати [name] і мені [age] років."
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-# === Функції для роботи з регулярними виразами ===
-
-def extract_emails(text):
-    """
-    Витяг email адрес з тексту.
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-def validate_phone_number(number):
-    """
-    Валідація українського телефонного номера.
-    Формат: +380xxxxxxxxx
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-def extract_hashtags(text):
-    """
-    Витяг хештегів з тексту.
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-def extract_mentions(text):
-    """
-    Витяг згадувань користувачів з тексту (напр. @user).
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-# === Функції для аналізу тексту ===
-
-def count_words(text):
-    """
-    Підрахунок кількості слів у тексті.
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-def count_sentences(text):
-    """
-    Підрахунок кількості речень у тексті.
-    """
-    # TODO: Реалізуйте функцію
-    pass
-
-def word_frequency(text):
-    """
-    Підрахунок частоти слів у тексті.
-    Повертає об'єкт Counter.
-    """
-    # TODO: Реалізуйте функцію
-    pass
 
 def analyze_text(text):
-    """
-    Комплексний аналіз тексту.
-    Повертає словник з результатами аналізу.
-    """
-    # TODO: Реалізуйте цю функцію, викликаючи інші ваші функції.
-    # Приклад результату:
-    # {
-    #     'word_count': ...,
-    #     'sentence_count': ...,
-    #     'word_frequency': [...],
-    #     'emails': [...],
-    #     ...
-    # }
-    return {}
+    words = re.findall(r"\b[\w'-]+\b", text.lower())
 
-def format_analysis_results(results):
-    """
-    Форматування результатів аналізу для зручного виведення.
-    """
-    # TODO: Реалізуйте функцію
-    output = "Результати аналізу тексту:\n"
-    # Додайте форматування для кожного елементу в `results`
-    return output
 
-# === Функція для вилучення даних за варіантом ===
+    main_text = text.split("Email для зв'язку:")[0]
+    sentences = re.split(r"(?<=[.!?])\s+", main_text.strip())
 
-def extract_variant_data(text, variant_pattern):
-    """
-    Вилучає дані з тексту за допомогою патерну, специфічного для варіанту.
-    """
-    # TODO: Реалізуйте функцію
-    pass
+    print(f"Кількість слів: {len(words)}")
+    print("Кількість речень: {}".format(len(sentences)))
 
-# === Головна частина програми ===
+    frequency = Counter(words)
 
-def read_file_content(filepath):
-    """
-    Читає вміст файлу.
-    """
-    try:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            return file.read()
-    except FileNotFoundError:
-        print(f"Помилка: Файл не знайдено за шляхом {filepath}")
-        return None
+    print("\n10 найчастіших слів:")
+    for word, count in frequency.most_common(10):
+        print(f"{word} - {count}")
 
-def main():
-    """
-    Головна функція, що керує виконанням програми.
-    """
-    print("Ласкаво просимо до аналізатора тексту!")
+def find_keywords(text):
+    keywords = [
+        "NeoTerra",
+        "квантові комп'ютери",
+        "штучний інтелект",
+        "технології",
+        "майбутнє"
+    ]
 
-    # Шлях до файлу з текстом
-    text_filepath = 'src/data/neoterra_text.txt'
+    print("\nКлючові слова та фрази:")
+    for word in keywords:
+        count = text.lower().count(word.lower())
+        print(f"{word}: {count}")
 
-    # Читання тексту з файлу
-    text_to_analyze = read_file_content(text_filepath)
-    if not text_to_analyze:
-        return # Завершити, якщо файл не прочитано
 
-    while True:
-        try:
-            print("\nОберіть опцію:")
-            print("1. Аналіз тексту 'NeoTerra 3000'")
-            print("2. Валідація телефонного номера")
-            print("3. Вилучення даних за варіантом")
-            print("4. Вихід")
-            choice = input("Ваш вибір: ")
+def find_computers(text):
+    return re.findall(r"\bQC-\d+\b", text)
 
-            if choice == '1':
-                results = analyze_text(text_to_analyze)
-                print(format_analysis_results(results))
 
-            elif choice == '2':
-                phone = input("Введіть номер телефону для валідації: ")
-                if validate_phone_number(phone):
-                    print("Номер телефону валідний.")
-                else:
-                    print("Номер телефону невалідний.")
+def find_email(text):
+    return re.findall(r"[\w.-]+@[\w.-]+\.[a-zA-Z]+", text)
 
-            elif choice == '3':
-                variant = input("Введіть номер вашого варіанту (1-30): ")
-                # TODO: Визначте патерн для вашого варіанту
-                # Наприклад, для варіанту 1 (квантові комп'ютери):
-                # pattern = r'\b[A-Z]{2}-\d{4}\b'
-                # variant_data = extract_variant_data(text_to_analyze, pattern)
-                # print(f"Знайдені дані: {variant_data}")
-                print("Цю частину необхідно реалізувати самостійно згідно вашого варіанту.")
 
-            elif choice == '4':
-                print("Дякуємо за використання аналізатора!")
-                break
+try:
+    with open("src/data/neoterra_text.txt", "r", encoding="utf-8") as file:
+        text = file.read()
 
-            else:
-                print("Невірний вибір. Спробуйте ще раз.")
+    print("АНАЛІЗ ТЕКСТУ NEOTERRA 3000\n")
 
-        except Exception as e:
-            print(f"Виникла помилка: {e}")
+    analyze_text(text)
+    find_keywords(text)
 
-if __name__ == '__main__':
-    main()
+    print("\nПошук слова NeoTerra:")
+    print(find_word(text, "NeoTerra"))
+
+    print("\nЗаміна слова:")
+    print(replace_word("Привіт, NeoTerra!",
+                       "NeoTerra", "Python"))
+
+    print("\nМоделі квантових комп'ютерів:")
+    print(find_computers(text))
+
+    print("\nЗнайдені email:")
+    print(find_email(text))
+
+except FileNotFoundError:
+    print("Помилка! Файл не знайдено.")
+
+except Exception as error:
+    print(f"Помилка: {error}")
+
